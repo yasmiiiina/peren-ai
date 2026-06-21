@@ -5,7 +5,12 @@ from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
 from app.database.base import Base
+from app.models import biomarker as biomarker_model  # noqa: F401
+from app.models import digital_twin as digital_twin_model  # noqa: F401
 from app.models import health as health_model  # noqa: F401
+from app.models import onboarding as onboarding_model  # noqa: F401
+from app.models import payment as payment_model  # noqa: F401
+from app.models import subscription as subscription_model  # noqa: F401
 from app.models import user as user_model  # noqa: F401
 
 config = context.config

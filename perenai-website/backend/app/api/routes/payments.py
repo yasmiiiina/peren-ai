@@ -191,6 +191,12 @@ async def payzone_callback(request: Request, db: Session = Depends(get_db)):
     order_id = str(params.get("orderId") or params.get("order_id") or params.get("session_id") or "")
     status_value = str(params.get("status") or params.get("paymentStatus") or "").lower()
 
+    if settings.is_production and not is_payzone_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Payzone is not configured",
+        )
+
     if is_payzone_configured() and not verify_signature(params):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Payzone signature")
 

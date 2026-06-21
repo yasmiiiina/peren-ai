@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -7,11 +9,14 @@ from app.core.config import settings
 from app.database.base import Base
 from app.database.session import engine
 from app.models import biomarker as biomarker_model  # noqa: F401
+from app.models import health as health_model  # noqa: F401
 from app.models import subscription as subscription_model  # noqa: F401
 from app.models import onboarding as onboarding_model  # noqa: F401
 from app.models import user as user_model  # noqa: F401
 from app.models import payment as payment_model  # noqa: F401
 from app.models import digital_twin as digital_twin_model  # noqa: F401
+
+logger = logging.getLogger(__name__)
 
 # Dev only: auto-create tables. Production relies on Alembic (start.sh).
 if not settings.is_production:
@@ -28,12 +33,30 @@ if not settings.is_production:
                 conn.execute(text("ALTER TABLE users ADD COLUMN profile_type VARCHAR(50) DEFAULT 'individu'"))
                 db.commit()
         except Exception as e:
-            print(f"Error checking/adding profile_type column: {e}")
+            logger.warning("Error checking/adding profile_type column: %s", e)
             db.rollback()
         finally:
             db.close()
 
 app = FastAPI(title=settings.app_name)
+
+
+@app.on_event("startup")
+def validate_production_config() -> None:
+    if not settings.is_production:
+        return
+    errors: list[str] = []
+    if not settings.secret_key or len(settings.secret_key) < 16:
+        errors.append("SECRET_KEY must be set (min 16 chars)")
+    if "sqlite" in settings.database_url.lower():
+        errors.append("DATABASE_URL must use PostgreSQL in production")
+    if not settings.payment_webhook_secret and not (
+        settings.payzone_merchant_id and settings.payzone_secret_key
+    ):
+        errors.append("Configure PAYZONE_* or PAYMENT_WEBHOOK_SECRET")
+    if errors:
+        raise RuntimeError("Production config invalid: " + "; ".join(errors))
+
 
 app.add_middleware(
     CORSMiddleware,

@@ -181,7 +181,7 @@ openssl rand -hex 32   # PAYMENT_WEBHOOK_SECRET
 **Variables obligatoires production :**
 
 ```env
-FRONTEND_ORIGIN=https://peren.ai
+FRONTEND_ORIGIN=https://peren.ai,https://www.peren.ai
 GOOGLE_CALLBACK_URL=https://peren.ai/api/auth/google/callback
 GOOGLE_CLIENT_ID=xxxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=xxxx

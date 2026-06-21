@@ -12,6 +12,7 @@
 - [x] JWT httpOnly cookies + OAuth state CSRF
 - [x] Intégration OpenAI (Digital Twin, scans, biomarqueurs) avec fallback local
 - [x] Route `/api/health` corrigée et enregistrée
+- [x] Nettoyage code mort (11 fichiers), backend-spring supprimé, auth cookie fix
 
 ---
 

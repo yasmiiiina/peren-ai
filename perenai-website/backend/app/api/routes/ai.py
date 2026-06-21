@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.api.deps import get_current_user, get_db
 from app.models.onboarding import OnboardingData
@@ -82,6 +83,7 @@ def analyze_biomarkers(
             "source": result.get("source"),
         }
         onboarding.data = data
+        flag_modified(onboarding, "data")
         db.commit()
 
     return AIAnalysisResponse(

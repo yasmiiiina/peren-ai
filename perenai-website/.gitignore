@@ -21,6 +21,8 @@ frontend/node_modules/
 
 # Build outputs
 frontend/dist/
+backend-spring/
+**/target/
 
 # OS/editor
 .DS_Store

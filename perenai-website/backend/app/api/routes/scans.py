@@ -12,7 +12,6 @@ from app.api.deps import get_current_user, get_db
 from app.models.biomarker import Biomarker
 from app.models.onboarding import OnboardingData
 from app.models.user import User
-from app.schemas.ai import AIAnalysisResponse, ScanVitals
 from app.schemas.biomarker import BiomarkerCreate, BiomarkerOut
 from app.services.ai_service import AIService
 from app.services.digital_twin import DigitalTwinService
@@ -113,25 +112,6 @@ def get_scan_history(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch scan history: {str(e)}",
         )
-
-
-@router.post("/analyze", response_model=AIAnalysisResponse)
-def analyze_scan(
-    vitals: ScanVitals,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    onboarding = db.query(OnboardingData).filter(OnboardingData.user_id == current_user.id).first()
-    form = onboarding.data.get("form", {}) if onboarding and isinstance(onboarding.data, dict) else {}
-    context = DigitalTwinService.map_onboarding_to_pipeline(form) if form else {}
-    result = AIService.analyze_face_scan(vitals.model_dump(), context)
-    return AIAnalysisResponse(
-        summary=result["summary"],
-        risk_level=result.get("risk_level"),
-        insights=result.get("insights", []),
-        recommendations=result.get("recommendations", []),
-        source=result["source"],
-    )
 
 
 @router.get("/stream")
