@@ -1,0 +1,116 @@
+[SPAN] PEREN
+[SPAN] AI
+[DIV] Core
+[SPAN] Overview
+[SPAN] Dashboard
+[DIV] My Twin
+[SPAN] Assessment
+[SPAN] Blood test
+[SPAN] Connect wearables
+[DIV] My Health Tokens
+[SPAN] Daily positive actions
+[SPAN] Biomarker evolution
+[SPAN] Prevention trajectory
+[SPAN] Share PEREN AI
+[P] 100 credits per paid referral.
+[BUTTON] Invite now
+[SPAN] Upgrade to Premium
+[P] Unlock more features.
+[BUTTON] Upgrade
+[SPAN] Toggle Sidebar
+[SPAN] Workspace
+[SPAN] /
+[SPAN] Blood test
+[BUTTON] Search
+[KBD] ⌘K
+[DIV] 2 panels recommended based on your assessment
+[H1] Find your recommended tests
+[P] Based on your twin's profile, we've identified the most impactful biomarker panels to track. Prioritize high-relevance panels for maximum predictive accuracy.
+[H2] Recommended panels
+[SPAN] RECOMMENDED
+[H3] Metabolic health panel
+[P] Core metabolic markers to assess insulin sensitivity and glucose regulation.
+[SPAN] Fasting glucose
+[SPAN] HbA1c
+[SPAN] Insulin
+[SPAN] Triglycerides
+[SPAN] HOMA-IR
+[BUTTON] View panel details
+[SPAN] RECOMMENDED
+[H3] Cardiovascular risk panel
+[P] Advanced lipid and inflammatory markers beyond standard cholesterol.
+[SPAN] ApoB
+[SPAN] Lp(a)
+[SPAN] hs-CRP
+[SPAN] Homocysteine
+[SPAN] LDL-P
+[BUTTON] View panel details
+[SPAN] OPTIONAL
+[H3] Hormonal balance panel
+[P] Endocrine markers to evaluate hormonal optimization and thyroid function.
+[SPAN] Total testosterone
+[SPAN] Free testosterone
+[SPAN] DHEA-S
+[SPAN] Cortisol
+[SPAN] TSH
+[SPAN] Free T3/T4
+[BUTTON] View panel details
+[SPAN] OPTIONAL
+[H3] Longevity & inflammation
+[P] Biomarkers associated with biological aging and chronic inflammation.
+[SPAN] GlycanAge
+[SPAN] IL-6
+[SPAN] TNF-α
+[SPAN] Vitamin D
+[SPAN] Omega-3 index
+[BUTTON] View panel details
+[H2] Recent results
+[P] Your latest biomarker readings and their reference ranges.
+[BUTTON] Upload results
+[TH] Marker
+[TH] Value
+[TH] Reference
+[TH] Status
+[TD] HbA1c
+[TD] 5.2%
+[TD] < 5.7%
+[TD] optimal
+[TD] ApoB
+[TD] 82 mg/dL
+[TD] < 90 mg/dL
+[TD] optimal
+[TD] hs-CRP
+[TD] 1.8 mg/L
+[TD] < 1.0 mg/L
+[TD] elevated
+[TD] Vitamin D
+[TD] 38 ng/mL
+[TD] 40-60 ng/mL
+[TD] low
+[SPAN] Edit with
+[SCRIPT] // Don't show the lovable-badge if the page is in an iframe or if it's being rendered by puppeteer (screenshot service)
+	if (window.self !== window.top || navigator.userAgent.includes('puppeteer')) {
+		// the page is in an iframe
+		var badge = document.getElementById('lovable-badge');
+		if (badge) {
+			badge.style.display = 'none';
+		}
+	}
+
+	// Add click event listener to close button with animation
+	var closeButton = document.getElementById('lovable-badge-close');
+	if (closeButton) {
+		closeButton.addEventListener('click', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var badge = document.getElementById('lovable-badge');
+			if (badge) {
+				badge.classList.add('closing');
+				setTimeout(function() {
+					if (badge) {
+						badge.style.display = 'none';
+					}
+				}, 240);
+			}
+		});
+	}
